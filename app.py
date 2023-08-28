@@ -34,7 +34,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     get_message = event.message.text
-    user_id = event.source.userId
+    user_id = event.source.user_id
 
     # Send To Line
     reply = TextSendMessage(text=f"{user_id}: {get_message}")
