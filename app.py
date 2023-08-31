@@ -53,7 +53,7 @@ def proc_msg(uid, msg):
             except Exception as e:
                 return e
 
-            data.push({'item': item, 'cost': cost})
+            data.append({'item': item, 'cost': cost})
 
         try:
             client['accounting'].uid.insert_many(data)
@@ -72,5 +72,5 @@ def handle_message(event):
     ret = proc_msg(user_id, get_message)
 
     # Send To Line
-    reply = TextSendMessage(text=f"{user_id}: {ret}")
+    reply = TextSendMessage(text=f"{ret}")
     line_bot_api.reply_message(event.reply_token, reply)
