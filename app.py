@@ -53,7 +53,7 @@ def proc_msg(uid, msg):
             except Exception as e:
                 return e
 
-            data.append({'item': item, 'cost': cost})
+            data.append({'item': item, 'cost': cost, 'datetime': datetime.now()})
 
         try:
             mongo_client['accounting'][uid].insert_many(data)
