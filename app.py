@@ -56,7 +56,7 @@ def proc_msg(uid, msg):
             data.append({'item': item, 'cost': cost})
 
         try:
-            client['accounting'].uid.insert_many(data)
+            mongo_client['accounting'][uid].insert_many(data)
             return f'成功寫入{len(data)}筆'
         except Exception as e:
             return e
