@@ -51,6 +51,7 @@ def proc_msg(uid, msg):
             first_day = datetime(now.year, now.month, 1, 0, 0, 0)
             last_day = datetime(now.year, now.month + 1, 1, 23, 59, 59)
 
+            db = mongo_client['accounting'][uid]
             ret = db.aggregate([
                                  {
                                    '$match': {
