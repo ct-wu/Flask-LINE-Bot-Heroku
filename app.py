@@ -39,10 +39,46 @@ usage = '''使用說明
 例如：早餐 100
 也支援透過半形逗號分隔多筆
 例如：早餐 100, 午餐 200
+
+/sum
+當月匯總
 '''
 
 def proc_msg(uid, msg):
     if msg.startswith("/"):
+        if msg == '/sum':
+            now = datetime.now()
+            first_day = datetime(now.year, now.month, 1, 0, 0, 0)
+            last_day = datetime(now.year, now.month + 1, 1, 23, 59, 59)
+
+            ret = db.aggregate([
+                                 {
+                                   '$match': {
+                                     'datetime': {
+                                       '$gte': first_day,
+                                       '$lte': last_day
+                                     }
+                                   }
+                                 },
+                                 {
+                                   '$group': {
+                                     '_id': "$item",
+                                     'total_cost': {
+                                       '$sum': "$cost"
+                                     }
+                                   }
+                                 }
+                               ])
+
+            summary = []
+            total = 0
+            for x in ret:
+                summary.append(f'{x["_id"]}：{x["total_cost"]}')
+                total += x['total_cost']
+
+            summary.append(f'總共：{total}')
+
+            return '\n'.join(summary)
         return usage
     elif msg.count(' ') > 0:
         tokens = [x.strip() for x in msg.split(',')]
