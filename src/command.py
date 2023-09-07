@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Callable
+from typing import Type
 from src.dto import Item
 
 from src.repo import Repo
@@ -9,7 +9,7 @@ class Command:
   msg: str
   uid: str
 
-  def execute(self, repo_cls: Callable[[str], Repo]) -> str:
+  def execute(self, repo_cls: Type[Repo]) -> str:
     pass
 
 
